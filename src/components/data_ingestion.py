@@ -6,6 +6,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
 from src.components.data_transformation import dataTransformation,dataTransformationConfig
+from src.components.model_trainer import modelTrainer,modelTrainerConfig
 
 @dataclass
 class dataIngestionConfig:
@@ -28,7 +29,7 @@ class dataIngestion:
             df.to_csv(self.ingestion_config.raw_data_path,index=False,header=True)
             logging.info("Train test split initiated!")
 
-            x_train,x_test = train_test_split(df,test_size=0.2,random_state=72)
+            x_train,x_test = train_test_split(df,test_size=0.2,random_state=12)
 
             x_train.to_csv(self.ingestion_config.train_data_path, index=False, header=True)
             x_test.to_csv(self.ingestion_config.test_data_path, index=False, header=True)
@@ -46,4 +47,9 @@ if __name__ == "__main__":
     train_data,test_data=obj.initiate_data_ingestion()
 
     data_transformation = dataTransformation()
-    data_transformation.initiate_data_transformation(train_data,test_data)
+    train_arr,test_arr,_= data_transformation.initiate_data_transformation(train_data,test_data)
+
+    model_trainer=modelTrainer()
+    r2score, best_model = model_trainer.initiate_model_trainer(train_arr=train_arr,test_arr=test_arr)
+    print('Best R2 Score: {:.2f}%'.format(r2score * 100))
+    print('Model Name:{}'.format(best_model))
