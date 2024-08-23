@@ -36,8 +36,8 @@ class dataTransformation:
             categorical_pipeline=Pipeline(
                 steps=[
                     ('Imputer',SimpleImputer(strategy="most_frequent")),
-                    ('one_hot-encoder',OneHotEncoder(sparse_output=False)),
-                    ('Scaler',StandardScaler())
+                    ('one_hot-encoder',OneHotEncoder()),
+                    ('Scaler',StandardScaler(with_mean=False))
                 ]
             )
             logging.info("Numerical columns scaling completed")
