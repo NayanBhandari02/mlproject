@@ -50,6 +50,10 @@ if __name__ == "__main__":
     train_arr,test_arr,_= data_transformation.initiate_data_transformation(train_data,test_data)
 
     model_trainer=modelTrainer()
-    r2score, best_model = model_trainer.initiate_model_trainer(train_arr=train_arr,test_arr=test_arr)
-    print('Best R2 Score: {:.2f}%'.format(r2score * 100))
+    r2score, mse, mae, best_model, model_report = model_trainer.initiate_model_trainer(train_arr=train_arr,test_arr=test_arr)
+    for key, value in model_report.items():
+        print(f"Model: {key}       R2 Score: {value['test_r2_score'] * 100: .2f}%    MSE: {value['test_mse']:.2f}    MAE: {value['test_mae']:.2f}")
+    print('Best Model R2 Score: {:.2f}%'.format(r2score * 100))
+    print('Best Model MSE: {:.2f}'.format(mse))
+    print('Best Model MAE: {:.2f}'.format(mae))
     print('Model Name:{}'.format(best_model))
